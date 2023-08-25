@@ -40,7 +40,7 @@ class Question
     /**
      * @ORM\Column(type="integer")
      */
-    private $votes;
+    private $votes = 0;
 
     public function getId(): ?int
     {
@@ -95,14 +95,35 @@ class Question
         return $this;
     }
 
-    public function getVotes(): ?int
+    public function getVotes(): int
     {
         return $this->votes;
     }
 
-    public function setVotes(int $votes): self
+    public function getVotesString(): string
+    {
+        $prefix = $this->votes >= 0 ? '+' : '-';
+
+        return sprintf("%s %d", $prefix, abs($this->getVotes()));
+    }
+
+    public function setVotes(int $votes)
     {
         $this->votes = $votes;
+
+        return $this;
+    }
+
+    public function upVote(): self
+    {
+        $this->votes++;
+
+        return $this;
+    }
+
+    public function downVote(): self
+    {
+        $this->votes--;
 
         return $this;
     }
